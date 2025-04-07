@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Dados</title>
+    <!-- Inclui o arquivo CSS -->
+    <link rel="stylesheet" href="dados.css">
+    <!-- Inclui as bibliotecas Chart.js, Luxon e o adaptador para trabalhar com datas no Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>
+    <!-- Inclui a biblioteca de zoom -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Dados por Período</h1>
+        
+        <!-- Campos de entrada para selecionar a data de início e fim -->
+        <div class="input-group">
+            <div class="input-row">
+                <label for="dataInicio">Data de Início:</label>
+                <input type="date" id="dataInicio">
+            </div>
+            <div class="input-row">
+                <label for="dataFim">Data de Fim:</label>
+                <input type="date" id="dataFim">
+            </div>
+            <div class="input-row">
+                <label for="escalaTempo">Escala de Tempo:</label>
+                <select id="escalaTempo">
+                    <option value="15">15 minutos</option>
+                    <option value="60">1 hora</option>
+                    <option value="720">12 horas</option>
+                    <option value="1440">1 dia</option>
+                    <option value="10080">1 semana</option>
+                </select>
+            </div>
+            <button onclick="carregarDados()">Carregar Dados</button>
+        </div>
+        
+        <!-- Div para exibir os valores do field 1 - habilitar no js removendo os comentários-->
+        <div id="valores"></div>
+
+        <!-- Canvas onde o gráfico será renderizado -->
+        <canvas id="meuGrafico"></canvas>
+
+
+
+        <!-- Div para exibir os resumos -->
+        <div id="results">
+            <h2>Resultados:</h2>
+            <p>Temperatura Média: <span id="avgTemp">--</span> °C</p>
+            <p>Temperatura Máxima: <span id="maxTemp">--</span> °C</p>
+            <p>Temperatura Mínima: <span id="minTemp">--</span> °C</p>
+        </div>
+
+        <!-- Link para página de controle -->
+        <div class="buttons">
+            <button class="button blue" onclick="window.location.href='index.html'">Voltar</button>
+        </div>
+
+
+    </div>
+
+    <!-- Inclui o arquivo JavaScript -->
+    <script src="dados.js"></script>
+</body>
+</html>

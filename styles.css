@@ -1,0 +1,185 @@
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif; /* Fonte padrão */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Centraliza verticalmente */
+    background-color: #f4f4f4; /* Cor de fundo */
+    flex-direction: column; /* Alinha os itens em coluna */
+  }
+  
+  /* Container principal */
+  .container {
+    text-align: center;
+    background-color: #ffffff; /* Fundo branco */
+    padding: 10px;
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 90%;
+    max-width: 500px; /* Largura máxima */
+    margin: 5px 0; /* Espaçamento externo */
+  }
+  
+  /* Títulos */
+  h1 {
+    margin-bottom: 10px; /* Espaçamento abaixo */
+    color: #333; /* Cor do texto */
+  }
+ 
+  /* Formulários */
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os elementos */
+  }
+  
+  label {
+    font-weight: bold; /* Texto em negrito */
+    color: #555; /* Cor do texto */
+  }
+  
+  input {
+    padding: 8px;
+    border: 1px solid #ccc; /* Borda cinza */
+    border-radius: 4px; /* Bordas arredondadas */
+    font-size: 16px; /* Tamanho da fonte */
+    width: 100px;
+  }
+  
+  /* Área de dados */
+  .data {
+    margin-bottom: 20px; /* Espaçamento abaixo da área de dados */
+  }
+  
+  .data h2 {
+    margin: 0;
+    font-size: 24px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+  }
+  
+  /* Botões */
+  .buttons {
+    display: flex;
+    justify-content: space-around; /* Distribui os botões igualmente */
+    margin-top: 10px; /* Espaçamento acima dos botões */
+  }
+  
+  .button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px; /* Bordas arredondadas */
+    color: white; /* Texto branco */
+    cursor: pointer;
+    font-size: 16px; /* Tamanho da fonte */
+    width: 150px; /* Largura fixa */
+    transition: background-color 0.3s, transform 0.1s; /* Efeito de transição */
+  }
+  
+  /* Botão verde (Ligar) */
+  .button.green {
+    background-color: #4CAF50; /* Verde */
+  }
+  
+  .button.green:hover {
+    background-color: #45a049; /* Verde mais escuro ao passar o mouse */
+  }
+  
+  /* Botão vermelho (Desligar) */
+  .button.red {
+    background-color: #f44336; /* Vermelho */
+  }
+  
+  .button.red:hover {
+    background-color: #e53935; /* Vermelho mais escuro ao passar o mouse */
+  }
+  
+  /* Botão azul (Acessar Dados/Voltar) */
+  .button.blue {
+    background-color: #007bff; /* Azul */
+  }
+  
+  .button.blue:hover {
+    background-color: #0056b3; /* Azul mais escuro ao passar o mouse */
+  }
+  
+  /* Botão desabilitado */
+  .button:disabled {
+    background-color: #ccc; /* Cinza */
+    cursor: not-allowed; /* Cursor de não permitido */
+  }
+  
+  /* Efeito ao clicar no botão */
+  .button:active {
+    transform: scale(0.95); /* Reduz o tamanho do botão ao clicar */
+  }
+  
+  /* Resultados */
+  #results {
+    margin-top: 20px; /* Espaçamento acima dos resultados */
+    text-align: left; /* Alinhamento do texto à esquerda */
+  }
+  
+  #results p {
+    margin: 10px 0; /* Espaçamento entre os parágrafos */
+    font-size: 18px; /* Tamanho da fonte */
+    color: #333; /* Cor do texto */
+  }
+
+
+ /* Incluído para a seção do formulário comando automático */
+  .form-group {
+    display: flex;
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    margin-bottom: 10px;
+  }
+
+  label {
+      margin-right: 30px; /* Espaço entre o label e o input */
+      width: 250px; /* Largura fixa para os labels */
+      text-align: right; /* Alinha o texto do label à direita */
+  }
+
+  input {
+      padding: 5px;
+      font-size: 14px;
+      width: 100px;
+  }
+  button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px; /* Bordas arredondadas */
+      color: rgb(241, 8, 27); /* Texto branco */
+      cursor: pointer;
+      font-size: 16px; /* Tamanho da fonte */
+      width: 110px; /* Largura fixa */
+      transition: background-color 0.3s, transform 0.1s; /* Efeito de transição */
+  }
+
+
+#modoAutomatico {
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+#modoAutomatico:hover {
+    background-color: #ddd;
+}
+
+/* formatação do texto que indica se bomba está ligada ou desligada */
+#statusBomba {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+/* formatação do texto que indica se aquecedor está ligado ou desligado */
+#statusAquecedor {
+  font-size: 22px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+

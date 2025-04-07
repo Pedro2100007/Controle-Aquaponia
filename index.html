@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Controle Aquaponia</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Sistema de Controle Aquaponia</h1>
+    </header>
+
+
+     <!--Seção de indicação dos dados e status bomba / aquecedor-->
+        <div class="container">
+            <h2>Tempo Real</h2>
+            <div class="data">
+                <h2>Temperatura: <span id="temperature">--</span> °C</h2>
+                <h2>Nível: <span id="level">--</span> cm</h2>
+                <h2><span id="statusBomba">Status da Bomba</h2>
+                <p id="statusAquecedor">Status do Aquecedor</p>
+            </div>
+        </div>
+
+        <!--Seção Controle Manual-->
+        <div class="container">
+            <h2>Controle Manual</h2>
+            <div class="buttons">
+                <button class="button green" id="bombaOn" title="Após clicar aguarde 15 segundos para o próximo comando">Ligar Bomba</button>
+                <button class="button red" id="bombaOff" title="Após clicar aguarde 15 segundos para o próximo comando">Desligar Bomba</button>
+           </div>
+            <div class="buttons">
+                <button class="button green" id="resistenciaOn" title="Após clicar aguarde 15 segundos para o próximo comando">Ligar Aquecedor</button>
+                <button class="button red" id="resistenciaOff" title="Após clicar aguarde 15 segundos para o próximo comando">Desligar Aquecedor</button>
+            </div>
+        </div>
+
+        <!--Seção Controle Automático-->
+        <div class="container">
+            <h2>Controle Automático</h2>
+
+
+            <form id="bombaForm">
+                <div class="form-group">
+                    <label for="tempoLiga" title="Entre com o tempo parao ciclo de ligar a bomba ou 0 para modo contínuo e aperte enter ">Ciclo para ligar bomba (minutos):</label>
+                    <input type="number" id="tempoLiga" name="tempoLiga" min="0" required>
+                    <!--<div id="tempoLigaStatus"></div>-->
+                </div>
+        
+                <div class="form-group">
+                    <label for="tempoDesliga" title="Entre com o tempo para desligar a bba após ligada e aperte enter. Operacional apenas em modo ciclico e não contínuo. Deve ser menor que o ciclo liga">Ciclo para desligar bomba (minutos):</label>
+                    <input type="number" id="tempoDesliga" name="tempoDesliga" min="0" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="temperaturaAlvo" title="Indique a temperatura desejada e aperte enter.">Temperatura alvo (Sugestão de 20 a 45 °C):</label>
+                    <input type="number" id="temperaturaAlvo" name="temperaturaAlvo" min="15" max="45" required>
+                </div>
+        
+                <div class="form-group">
+                    <label for="modoAutomatico">Modo automático?</label>
+                    <button type="button" id="modoAutomatico" onclick="toggleModoAutomatico()">Desligado</button>
+                </div>
+        
+            </form>
+
+            
+           
+        </div>
+
+        <!--Link para página de dados-->
+
+        <div class="buttons">
+            <button class="button blue" onclick="window.location.href='dados.html'">Acessar Dados</button>
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

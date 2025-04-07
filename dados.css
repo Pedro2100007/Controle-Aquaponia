@@ -1,0 +1,131 @@
+/* dados.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    text-align: center;
+    background-color: #fff; /* Fundo branco */
+    padding: 10px;
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 90%;
+    max-width: 500px; /* Largura máxima */
+    margin: 5px 0; /* Espaçamento externo */
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaçamento entre os elementos */
+}
+
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Espaçamento entre label e input */
+}
+
+label {
+    font-weight: bold;
+    text-align: left;
+}
+
+input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#valores {
+    margin-top: 20px;
+}
+
+#meuGrafico {
+    margin-top: 20px;
+}
+
+#results {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.buttons {
+    margin-top: 20px;
+}
+
+.button.blue {
+    background-color: #007bff;
+    color: white;
+}
+
+.button.blue:hover {
+    background-color: #0056b3;
+}
+
+.input-row select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 200px;
+}
+
+#results p small {
+    font-size: 0.8em;
+    color: #666;
+    margin-left: 5px;
+}
+
+#results p {
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.zoom-controls {
+    margin: 15px 0;
+    text-align: center;
+}
+
+.zoom-controls button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.zoom-controls button:hover {
+    background-color: #45a049;
+}
