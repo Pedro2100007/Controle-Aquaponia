@@ -32,12 +32,15 @@
                 <select id="escalaTempo">
                     <option value="15">15 minutos</option>
                     <option value="60">1 hora</option>
+                    <option value="120">2 horas</option>
+                    <option value="240">4 horas</option>
+                    <option value="360">6 horas</option>
                     <option value="720">12 horas</option>
                     <option value="1440">1 dia</option>
                     <option value="10080">1 semana</option>
                 </select>
             </div>
-            <button onclick="carregarDados()">Carregar Dados</button>
+            <button onclick="carregarDados()">Gráfico</button>
         </div>
         
         <!-- Div para exibir os valores do field 1 - habilitar no js removendo os comentários-->
@@ -45,8 +48,6 @@
 
         <!-- Canvas onde o gráfico será renderizado -->
         <canvas id="meuGrafico"></canvas>
-
-
 
         <!-- Div para exibir os resumos -->
         <div id="results">
