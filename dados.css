@@ -1,13 +1,14 @@
 /* dados.css */
 body {
-    font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif; /* Fonte padrão */
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100vh; /* Centraliza verticalmente */
+    background-color: #f4f4f4; /* Cor de fundo */
+    flex-direction: column; /* Alinha os itens em coluna */
 }
 
 .container {
@@ -84,6 +85,7 @@ button:hover {
 .button.blue {
     background-color: #007bff;
     color: white;
+    width: 150px
 }
 
 .button.blue:hover {
@@ -107,7 +109,7 @@ button:hover {
 
 #results p {
     margin-bottom: 10px;
-    line-height: 1.4;
+    line-height: 0.8;
 }
 
 .zoom-controls {

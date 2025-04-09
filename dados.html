@@ -14,9 +14,11 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>Consulta de Dados por Período</h1>
-        
+    </header>
+    <div class="container">
+                
         <!-- Campos de entrada para selecionar a data de início e fim -->
         <div class="input-group">
             <div class="input-row">
@@ -57,13 +59,13 @@
             <p>Temperatura Mínima: <span id="minTemp">--</span> °C</p>
         </div>
 
-        <!-- Link para página de controle -->
-        <div class="buttons">
-            <button class="button blue" onclick="window.location.href='index.html'">Voltar</button>
-        </div>
-
-
     </div>
+
+    <!-- Link para página de controle -->
+    <div class="buttons">
+        <button class="button blue" onclick="window.location.href='index.html'">Voltar</button>
+    </div>
+    
 
     <!-- Inclui o arquivo JavaScript -->
     <script src="dados.js"></script>
