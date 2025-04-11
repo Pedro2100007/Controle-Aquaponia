@@ -2,168 +2,149 @@
 const channelID = '2840207';
 const readAPIKey = '5UWNQD21RD2A7QHG';
 const writeAPIKey = '9NG6QLIN8UXLE2AH';
-const temperatureField = 'field1';
-const levelField = 'field2';
-const bombaField = 'field3';
-const resistenciaField = 'field4';
-const modoAutomaticoField = 'field5';
-const temperaturaAlvoField = 'field6'; 
-const tempoLigaField = 'field7';
-const tempoDesligaField = 'field8';
 
-// Elementos da seção de controle manual
-const temperatureElement = document.getElementById('temperature');
-const levelElement = document.getElementById('level');
-const bombaOnButton = document.getElementById('bombaOn');
-const bombaOffButton = document.getElementById('bombaOff');
-const resistenciaOnButton = document.getElementById('resistenciaOn');
-const resistenciaOffButton = document.getElementById('resistenciaOff');
-const botaoModoAuto = document.getElementById('modoAutomatico'); // Adicionado
+// Elementos da interface
+const elements = {
+  temperature: document.getElementById('temperature'),
+  level: document.getElementById('level'),
+  statusBomba: document.getElementById('statusBomba'),
+  statusAquecedor: document.getElementById('statusAquecedor'),
+  modoAutomatico: document.getElementById('modoAutomatico'),
+  bombaOn: document.getElementById('bombaOn'),
+  bombaOff: document.getElementById('bombaOff'),
+  resistenciaOn: document.getElementById('resistenciaOn'),
+  resistenciaOff: document.getElementById('resistenciaOff')
+};
 
-// Variáveis para armazenar os últimos valores válidos do thingspeak
-let modoAutomatico = 0;
-let lastValidTemperature = '--';
-let lastValidLevel = '--';
-
-// Função para buscar dados do ThingSpeak em tempo real
-function fetchData() {
-    fetch(`https://api.thingspeak.com/channels/${channelID}/feeds/last.json?api_key=${readAPIKey}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro na requisição: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Dados recebidos:', data);
-
-            // Atualiza a temperatura se o campo não estiver vazio
-            if (data[temperatureField] && data[temperatureField].trim() !== '') {
-                lastValidTemperature = data[temperatureField];
-            }
-            temperatureElement.textContent = lastValidTemperature;
-
-            // Atualiza o nível se o campo não estiver vazio
-            if (data[levelField] && data[levelField].trim() !== '') {
-                lastValidLevel = data[levelField];
-            }
-            levelElement.textContent = lastValidLevel;
-
-            // Atualiza o status da bomba
-            if (data[bombaField] == 1) {
-                statusBomba.textContent = 'Bomba Ligada';
-                statusBomba.style.color = 'green';
-            } else {
-                statusBomba.textContent = 'Bomba Desligada';
-                statusBomba.style.color = 'red';
-            }
-            
-            // Atualiza o status do aquecedor
-            if (data[resistenciaField] == 1) {
-                statusAquecedor.textContent = 'Aquecedor Ligado';
-                statusAquecedor.style.color = 'green';
-            } else {
-                statusAquecedor.textContent = 'Aquecedor Desligado';
-                statusAquecedor.style.color = 'red';
-            }
-
-            // Atualiza o estado do botão modo automático
-            const modoAutoValue = data[modoAutomaticoField];
-            if (modoAutoValue != null) { // Verifica se o campo existe
-                modoAutomatico = parseInt(modoAutoValue);
-                botaoModoAuto.textContent = modoAutomatico === 1 ? 'Ligado' : 'Desligado';
-            }
-
-        })
-        .catch(error => {
-            console.error('Erro ao buscar dados:', error);
-            temperatureElement.textContent = lastValidTemperature;
-            levelElement.textContent = lastValidLevel;
-        });
+// Função para atualizar a interface
+function updateUI(data) {
+  console.log("Dados recebidos para atualização:", data);
+  
+  // Temperatura (field1)
+  if (data.field1 !== undefined && data.field1 !== null) {
+    elements.temperature.textContent = parseFloat(data.field1).toFixed(1);
+  }
+  
+  // Nível (field2)
+  if (data.field2 !== undefined && data.field2 !== null) {
+    elements.level.textContent = parseFloat(data.field2).toFixed(1);
+  }
+  
+  // Bomba (field3)
+  if (data.field3 !== undefined && data.field3 !== null) {
+    const bombaState = parseInt(data.field3);
+    elements.statusBomba.textContent = bombaState ? 'Bomba Ligada' : 'Bomba Desligada';
+    elements.statusBomba.style.color = bombaState ? 'green' : 'red';
+  }
+  
+  // Aquecedor (field4)
+  if (data.field4 !== undefined && data.field4 !== null) {
+    const resistenciaState = parseInt(data.field4);
+    elements.statusAquecedor.textContent = resistenciaState ? 'Aquecedor Ligado' : 'Aquecedor Desligado';
+    elements.statusAquecedor.style.color = resistenciaState ? 'green' : 'red';
+  }
+  
+  // Modo Automático (field5)
+  if (data.field5 !== undefined && data.field5 !== null) {
+    const modoAutoState = parseInt(data.field5);
+    elements.modoAutomatico.textContent = modoAutoState ? 'Ligado' : 'Desligado';
+  }
 }
 
-// Atualiza os dados em tempo real a cada 5 segundos
-if (temperatureElement && levelElement) {
-    setInterval(fetchData, 5000);
-    fetchData();
+// Função para buscar dados do ThingSpeak
+async function fetchData() {
+  try {
+    const response = await fetch(`https://api.thingspeak.com/channels/${channelID}/feeds/last.json?api_key=${readAPIKey}`);
+    
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    console.log("Dados completos da API:", data);
+    
+    if (!data || Object.keys(data).length === 0) {
+      throw new Error("Dados vazios recebidos da API");
+    }
+    
+    updateUI(data);
+    return data;
+    
+  } catch (error) {
+    console.error("Erro ao buscar dados:", error);
+    return null;
+  }
 }
 
 // Função para atualizar um campo no ThingSpeak
-function updateField(field, value) {
+async function updateField(field, value) {
+  try {
     const url = `https://api.thingspeak.com/update?api_key=${writeAPIKey}&${field}=${value}`;
-    console.log(`Enviando requisição para: ${url}`);
-
-    fetch(url, {
-        method: 'POST'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro na requisição: ' + response.statusText);
-        }
-        return response.text();
-    })
-    .then(data => {
-        console.log(`Campo ${field} atualizado com sucesso. Resposta: ${data}`);
-        // Após atualizar com sucesso, força uma nova busca dos dados
-        fetchData();
-    })
-    .catch(error => {
-        console.error(`Erro ao atualizar campo ${field}:`, error);
-    });
-}
-
-// Event listeners para os botões do controle manual
-if (bombaOnButton && bombaOffButton && resistenciaOnButton && resistenciaOffButton) {
-    bombaOnButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) {
-            console.log('Ligando bomba...');
-            updateField(bombaField, 1);
-        } else {
-            alert('Modo automático está ligado. Desligue o modo automático para controlar manualmente.');
-        }
-    });
-
-    bombaOffButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) {
-            console.log('Desligando bomba...');
-            updateField(bombaField, 0);
-        } else {
-            alert('Modo automático está ligado. Desligue o modo automático para controlar manualmente.');
-        }
-    });
-
-    resistenciaOnButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) {
-            console.log('Ligando resistência...');
-            updateField(resistenciaField, 1);
-        } else {
-            alert('Modo automático está ligado. Desligue o modo automático para controlar manualmente.');
-        }
-    });
-
-    resistenciaOffButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) {
-            console.log('Desligando resistência...');
-            updateField(resistenciaField, 0);
-        } else {
-            alert('Modo automático está ligado. Desligue o modo automático para controlar manualmente.');
-        }
-    });
-}
-
-// Função para controle automático
-function toggleModoAutomatico() {
-    const novoEstado = modoAutomatico === 0 ? 1 : 0;
+    const response = await fetch(url, { method: 'POST' });
     
-    // Atualiza imediatamente a interface para melhor experiência do usuário
-    modoAutomatico = novoEstado;
-    botaoModoAuto.textContent = novoEstado === 1 ? 'Ligado' : 'Desligado';
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
     
-    // Envia a atualização para o ThingSpeak
-    updateField(modoAutomaticoField, novoEstado);
+    const result = await response.text();
+    console.log(`Campo ${field} atualizado. Resposta:`, result);
+    
+    // Força atualização imediata
+    await fetchData();
+    
+  } catch (error) {
+    console.error(`Erro ao atualizar ${field}:`, error);
+  }
 }
 
-// Inicializa a página buscando os dados imediatamente
-document.addEventListener('DOMContentLoaded', function() {
-    fetchData();
+// Configuração dos event listeners
+function setupEventListeners() {
+  // Controle manual da bomba
+  elements.bombaOn?.addEventListener('click', () => {
+    const modoAuto = elements.modoAutomatico.textContent === 'Ligado';
+    if (!modoAuto) updateField('field3', 1);
+    else alert('Desative o modo automático primeiro');
+  });
+
+  elements.bombaOff?.addEventListener('click', () => {
+    const modoAuto = elements.modoAutomatico.textContent === 'Ligado';
+    if (!modoAuto) updateField('field3', 0);
+    else alert('Desative o modo automático primeiro');
+  });
+
+  // Controle manual do aquecedor
+  elements.resistenciaOn?.addEventListener('click', () => {
+    const modoAuto = elements.modoAutomatico.textContent === 'Ligado';
+    if (!modoAuto) updateField('field4', 1);
+    else alert('Desative o modo automático primeiro');
+  });
+
+  elements.resistenciaOff?.addEventListener('click', () => {
+    const modoAuto = elements.modoAutomatico.textContent === 'Ligado';
+    if (!modoAuto) updateField('field4', 0);
+    else alert('Desative o modo automático primeiro');
+  });
+
+  // Controle do modo automático
+  elements.modoAutomatico?.addEventListener('click', () => {
+    const currentState = elements.modoAutomatico.textContent === 'Ligado';
+    updateField('field5', currentState ? 0 : 1);
+  });
+}
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+  console.log("Página carregada. Iniciando configuração...");
+  
+  // Verificação dos elementos
+  for (const [key, element] of Object.entries(elements)) {
+    if (!element) console.error(`Elemento não encontrado: ${key}`);
+  }
+  
+  setupEventListeners();
+  fetchData();
+  
+  // Atualização periódica
+  setInterval(fetchData, 5000);
+  console.log("Configuração completa. Monitorando dados...");
 });
