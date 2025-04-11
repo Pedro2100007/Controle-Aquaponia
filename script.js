@@ -1,7 +1,7 @@
 // Configurações do ThingSpeak
-const channelID = '2840207'; // Channel ID
-const readAPIKey = '5UWNQD21RD2A7QHG'; // Read API Key
-const writeAPIKey = '9NG6QLIN8UXLE2AH'; // Write API Key
+const channelID = '2840207';
+const readAPIKey = '5UWNQD21RD2A7QHG';
+const writeAPIKey = '9NG6QLIN8UXLE2AH';
 const temperatureField = 'field1';
 const levelField = 'field2';
 const bombaField = 'field3';
@@ -18,8 +18,10 @@ const bombaOnButton = document.getElementById('bombaOn');
 const bombaOffButton = document.getElementById('bombaOff');
 const resistenciaOnButton = document.getElementById('resistenciaOn');
 const resistenciaOffButton = document.getElementById('resistenciaOff');
+const botaoModoAuto = document.getElementById('modoAutomatico'); // Adicionado
 
 // Variáveis para armazenar os últimos valores válidos do thingspeak
+let modoAutomatico = 0;
 let lastValidTemperature = '--';
 let lastValidLevel = '--';
 
@@ -33,7 +35,7 @@ function fetchData() {
             return response.json();
         })
         .then(data => {
-            console.log('Dados recebidos:', data); // Log dos dados recebidos
+            console.log('Dados recebidos:', data);
 
             // Atualiza a temperatura se o campo não estiver vazio
             if (data[temperatureField] && data[temperatureField].trim() !== '') {
@@ -47,29 +49,34 @@ function fetchData() {
             }
             levelElement.textContent = lastValidLevel;
 
-            // Atualiza o texto do status da bomba baseado no field3 do thingspeak
-            // Está com problema... assim que o thingspeak atualiza, o texto fica OK, mas depois de algum tempo muda para desligado sozinho, mesamo com o field em 1
+            // Atualiza o status da bomba
             if (data[bombaField] == 1) {
-                statusBomba.textContent = 'Bomba Ligada'; // Atualiza o texto do status da bomba
-                statusBomba.style.color = 'green'; // Muda a cor do texto para verde
+                statusBomba.textContent = 'Bomba Ligada';
+                statusBomba.style.color = 'green';
             } else {
-                statusBomba.textContent = 'Bomba Desligada'; // Atualiza o texto
-                statusBomba.style.color = 'red'; // Muda a cor do texto para vermelho
+                statusBomba.textContent = 'Bomba Desligada';
+                statusBomba.style.color = 'red';
             }
             
-            // Atualiza o texto do status do aquecedor baseado no field4 do thingspeak
+            // Atualiza o status do aquecedor
             if (data[resistenciaField] == 1) {
-                statusAquecedor.textContent = 'Aquecedor Ligado'; // Atualiza o texto do status da bomba
-                statusAquecedor.style.color = 'green'; // Muda a cor do texto para verde
+                statusAquecedor.textContent = 'Aquecedor Ligado';
+                statusAquecedor.style.color = 'green';
             } else {
-                statusAquecedor.textContent = 'Aquecedor Desligado'; // Atualiza o texto
-                statusAquecedor.style.color = 'red'; // Muda a cor do texto para vermelho
+                statusAquecedor.textContent = 'Aquecedor Desligado';
+                statusAquecedor.style.color = 'red';
+            }
+
+            // Atualiza o estado do botão modo automático
+            const modoAutoValue = data[modoAutomaticoField];
+            if (modoAutoValue != null) { // Verifica se o campo existe
+                modoAutomatico = parseInt(modoAutoValue);
+                botaoModoAuto.textContent = modoAutomatico === 1 ? 'Ligado' : 'Desligado';
             }
 
         })
         .catch(error => {
             console.error('Erro ao buscar dados:', error);
-            // Mantém os últimos valores válidos em caso de erro
             temperatureElement.textContent = lastValidTemperature;
             levelElement.textContent = lastValidLevel;
         });
@@ -78,14 +85,13 @@ function fetchData() {
 // Atualiza os dados em tempo real a cada 5 segundos
 if (temperatureElement && levelElement) {
     setInterval(fetchData, 5000);
-    fetchData(); // Busca os dados imediatamente ao carregar a página
+    fetchData();
 }
-
 
 // Função para atualizar um campo no ThingSpeak
 function updateField(field, value) {
     const url = `https://api.thingspeak.com/update?api_key=${writeAPIKey}&${field}=${value}`;
-    console.log(`Enviando requisição para: ${url}`); // Log da URL de requisição
+    console.log(`Enviando requisição para: ${url}`);
 
     fetch(url, {
         method: 'POST'
@@ -98,6 +104,8 @@ function updateField(field, value) {
     })
     .then(data => {
         console.log(`Campo ${field} atualizado com sucesso. Resposta: ${data}`);
+        // Após atualizar com sucesso, força uma nova busca dos dados
+        fetchData();
     })
     .catch(error => {
         console.error(`Erro ao atualizar campo ${field}:`, error);
@@ -107,7 +115,7 @@ function updateField(field, value) {
 // Event listeners para os botões do controle manual
 if (bombaOnButton && bombaOffButton && resistenciaOnButton && resistenciaOffButton) {
     bombaOnButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) { // Verifica se o modo automático está desligado
+        if (modoAutomatico === 0) {
             console.log('Ligando bomba...');
             updateField(bombaField, 1);
         } else {
@@ -116,7 +124,7 @@ if (bombaOnButton && bombaOffButton && resistenciaOnButton && resistenciaOffButt
     });
 
     bombaOffButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) { // Verifica se o modo automático está desligado
+        if (modoAutomatico === 0) {
             console.log('Desligando bomba...');
             updateField(bombaField, 0);
         } else {
@@ -125,7 +133,7 @@ if (bombaOnButton && bombaOffButton && resistenciaOnButton && resistenciaOffButt
     });
 
     resistenciaOnButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) { // Verifica se o modo automático está desligado
+        if (modoAutomatico === 0) {
             console.log('Ligando resistência...');
             updateField(resistenciaField, 1);
         } else {
@@ -134,7 +142,7 @@ if (bombaOnButton && bombaOffButton && resistenciaOnButton && resistenciaOffButt
     });
 
     resistenciaOffButton.addEventListener('click', () => {
-        if (modoAutomatico === 0) { // Verifica se o modo automático está desligado
+        if (modoAutomatico === 0) {
             console.log('Desligando resistência...');
             updateField(resistenciaField, 0);
         } else {
@@ -143,40 +151,19 @@ if (bombaOnButton && bombaOffButton && resistenciaOnButton && resistenciaOffButt
     });
 }
 
-
-// Incluído para o modo automático
-// Função para dados controle automático
-let modoAutomatico = 0; // 0 para desligado, 1 para ligado
-
+// Função para controle automático
 function toggleModoAutomatico() {
-    modoAutomatico = modoAutomatico === 0 ? 1 : 0;
-    const botao = document.getElementById('modoAutomatico');
-    botao.textContent = modoAutomatico === 1 ? 'Ligado' : 'Desligado';   
-
-    if (modoAutomatico === 1) { // Verifica se o modo automático está ligado
-        // Atualiza os campos 5, 6, 7 e 8 no ThingSpeak - não está funcionando , implementar botão ou enter para envio individual
-        updateField(modoAutomaticoField, 1);
-        //updateField(tempoLigaField, Number(tempoLiga);
-        //updateField(tempoDesligaField, Number(tempoDesliga);
-        //updateField(temperaturaAlvoField, Number(temperaturaAlvo);
-    } else {
-        updateField(modoAutomaticoField, 0);
-    }
-
+    const novoEstado = modoAutomatico === 0 ? 1 : 0;
+    
+    // Atualiza imediatamente a interface para melhor experiência do usuário
+    modoAutomatico = novoEstado;
+    botaoModoAuto.textContent = novoEstado === 1 ? 'Ligado' : 'Desligado';
+    
+    // Envia a atualização para o ThingSpeak
+    updateField(modoAutomaticoField, novoEstado);
 }
 
-
-
-
-
-
-//document.getElementById('bombaForm').addEventListener('submit', function(event) {
-    //event.preventDefault();
-
-    //const tempoLiga = parseInt(document.getElementById('tempoLiga').value);
-    //const tempoDesliga = parseInt(document.getElementById('tempoDesliga').value);
-    //const temperaturaAlvo = parseInt(document.getElementById('temperaturaAlvo').value);
-
-//});
-
-
+// Inicializa a página buscando os dados imediatamente
+document.addEventListener('DOMContentLoaded', function() {
+    fetchData();
+});
