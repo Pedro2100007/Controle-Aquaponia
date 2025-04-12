@@ -148,3 +148,60 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(fetchData, 5000);
   console.log("Configuração completa. Monitorando dados...");
 });
+
+//------------------------------------------------------- implementado para envio de parâmetros
+// Captura o input do tempoLiga
+const tempoLigaInput = document.getElementById('tempoLiga');
+// Função de envio do valor ao ThingSpeak
+function enviarTempoLiga() {
+  const tempoL = parseInt(tempoLigaInput.value);
+  // Validação básica
+  //if (isNaN(tempoL) || tempoL < 0) {
+  //  alert("Digite um número válido (0 ou maior)");
+  //  return;
+  //}
+  updateField(7, tempoL)
+}
+// Dispara o evento (Enter ou clicar fora)
+tempoLigaInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') enviarTempoLiga();
+});
+tempoLigaInput.addEventListener('blur', enviarTempoLiga);
+
+//-----
+// Captura o input do tempoDesliga
+const tempoDesligaInput = document.getElementById('tempoDesliga');
+// Função de envio do valor ao ThingSpeak
+function enviarTempoDesliga() {
+  const tempoD = parseInt(tempoDesligaInput.value);
+  // Validação básica
+  //if (isNaN(tempoD) || tempoD < 0) {
+  //  alert("Digite um número válido (0 ou maior)");
+  //  return;
+  //}
+  updateField(8, tempoD)
+}
+// Dispara o evento (Enter ou clicar fora)
+tempoDesligaInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') enviarTempoDesliga();
+});
+tempoDesligaInput.addEventListener('blur', enviarTempoDesliga);
+
+//-----
+// Captura o input do temperaturaAlvo
+const temperaturaAlvoInput = document.getElementById('temperaturaAlvo');
+// Função de envio do valor ao ThingSpeak
+function enviartemperaturaAlvo() {
+  const tempAl = parseInt(temperaturaAlvoInput.value);
+  // Validação básica
+  //if (isNaN(tempAl) || tempAl < 0) {
+  //  alert("Digite um número válido (0 ou maior)");
+  //  return;
+  //}
+  updateField(6, tempAl)
+}
+// Dispara o evento (Enter ou clicar fora)
+temperaturaAlvoInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') enviartemperaturaAlvo();
+});
+temperaturaAlvoInput.addEventListener('blur', enviartemperaturaAlvo);
