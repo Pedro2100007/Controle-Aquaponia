@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const tempoLigaInput = document.getElementById('tempoLiga');
 // Função de envio do valor ao ThingSpeak
 function enviarTempoLiga() {
-  const tempoL = parseInt(tempoLigaInput.value);
+  const tempoL = (parseInt(tempoLigaInput.value) || 0) * 10 ;
   // Validação básica
   //if (isNaN(tempoL) || tempoL < 0) {
   //  alert("Digite um número válido (0 ou maior)");
@@ -173,7 +173,7 @@ tempoLigaInput.addEventListener('blur', enviarTempoLiga);
 const tempoDesligaInput = document.getElementById('tempoDesliga');
 // Função de envio do valor ao ThingSpeak
 function enviarTempoDesliga() {
-  const tempoD = parseInt(tempoDesligaInput.value);
+  const tempoD = (parseInt(tempoDesligaInput.value) || 0) * 10;
   // Validação básica
   //if (isNaN(tempoD) || tempoD < 0) {
   //  alert("Digite um número válido (0 ou maior)");
